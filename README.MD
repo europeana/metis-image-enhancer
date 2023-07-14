@@ -47,7 +47,7 @@ git clone https://github.com/europeana/metis-image-enhancer.git
 ```
 
 ### Build docker ISR API
-go to the cloned folder of the library /metis-image-enhancer/src/main/resources/isr,
+go to the cloned folder of the library /metis-image-enhancer/metis-image-enhancer-lib/src/main/resources/isr,
 and run the following command to build the image enhancer application
 ```shell
 docker compose build --no-cache
@@ -55,7 +55,7 @@ docker compose build --no-cache
 
 # Usage
 #### Enable Python API Endpoint for image enhancement
-go to the cloned folder of the library /metis-image-enhancer/src/main/resources/isr, 
+go to the cloned folder of the library /metis-image-enhancer/metis-image-enhancer-lib/src/main/resources/isr, 
 and run the following commands to get the service up and running.
 this will run with 3 nodes
 ```shell
@@ -103,7 +103,17 @@ connect.timeout = 300
 read.timeout = 300
 ```
 
-See demo project
+#### See demo project
+run docker image previous to execute the demo app and then execute the following command in the cloned folder of 
+the /metis-image-enhancer/metis-image-enhancer-demo
+```shell
+mvn clean package
+```
+execute the app
+``` 
+java -jar ./target/metis-image-enhancer-demo-0.0.1-SNAPSHOT.jar
+```
+example of demo code, this loads an image and writes it to the indicated folder.
 ```java
 package eu.europeana.metis.isr;
 
@@ -123,35 +133,34 @@ import java.nio.file.Paths;
  * The type Main.
  */
 public class Main {
-  private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
-  /**
-   * The entry point of application.
-   *
-   * @param args the input arguments
-   */
-  public static void main(String[] args) {
-    ImageSuperResolutionService service = ImageSuperResolutionLibrary.getService(LibServiceType.API);
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
+    public static void main(String[] args) {
+        final ImageSuperResolutionService service = ImageSuperResolutionLibrary.getService(LibServiceType.API);
 
-    BufferedImage outputBufferedImage = service.enhance(
-            Paths.get("metis-image-enhancer-demo",
-                            "src", "main", "resources", "img", "europeana_demo.png")
-                    .toAbsolutePath()
-                    .toString());
+        final BufferedImage outputBufferedImage = service.enhance(
+                Paths.get("src", "main", "resources", "img", "europeana_demo.png")
+                        .toAbsolutePath()
+                        .toString());
 
-    try {
-      ImageIO.write(outputBufferedImage, "png",
-              new File(Paths.get("metis-image-enhancer-demo",
-                              "src", "main", "resources", "img", "europeana_demo_enhanced.png")
-                      .toAbsolutePath()
-                      .toString()));
-    } catch (IOException e) {
-      LOGGER.error("saving image file", e);
-      System.exit(1);
+        try {
+            ImageIO.write(outputBufferedImage, "png",
+                    new File(Paths.get("src", "main", "resources", "img", "europeana_demo_enhanced.png")
+                            .toAbsolutePath()
+                            .toString()));
+        } catch (IOException e) {
+            LOGGER.error("saving image file", e);
+            System.exit(1);
+        }
     }
-  }
 }
 ```
+
 # Example
 The following image shows the outcome:
 ## Original

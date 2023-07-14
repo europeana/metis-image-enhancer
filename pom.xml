@@ -97,16 +97,6 @@
 				<version>${version.surefire.plugin}</version>
 			</plugin>
 		</plugins>
-		<resources>
-			<!-- We make sure to include Python files with the build artifacts. -->
-			<resource>
-				<directory>lib/src/main/resources/</directory>
-				<includes>
-					<include>*.py</include>
-					<include>**/*.properties</include>
-				</includes>
-			</resource>
-		</resources>
 	</build>
 
 	<distributionManagement>
@@ -124,9 +114,9 @@
 
 	<!-- Github connection -->
 	<scm>
-		<connection>scm:git:https://github.com/europeana/metis-image-super-resolution</connection>
-		<url>https://github.com/europeana/metis-image-super-resolution</url>
+		<connection>scm:git:https://github.com/europeana/metis-image-enhancer</connection>
+		<url>https://github.com/europeana/metis-image-enhancer</url>
 		<tag>HEAD</tag>
-		<developerConnection>scm:git:https://github.com/europeana/metis-image-super-resolution</developerConnection>
+		<developerConnection>scm:git:https://github.com/europeana/metis-image-enhancer</developerConnection>
 	</scm>
 </project>

@@ -24,18 +24,16 @@ public class Main {
      * @param args the input arguments
      */
     public static void main(String[] args) {
-        ImageSuperResolutionService service = ImageSuperResolutionLibrary.getService(LibServiceType.API);
+        final ImageSuperResolutionService service = ImageSuperResolutionLibrary.getService(LibServiceType.API);
 
-        BufferedImage outputBufferedImage = service.enhance(
-                Paths.get("metis-image-enhancer-demo",
-                                "src", "main", "resources", "img", "europeana_demo.png")
+        final BufferedImage outputBufferedImage = service.enhance(
+                Paths.get("src", "main", "resources", "img", "europeana_demo.png")
                         .toAbsolutePath()
                         .toString());
 
         try {
             ImageIO.write(outputBufferedImage, "png",
-                    new File(Paths.get("metis-image-enhancer-demo",
-                                    "src", "main", "resources", "img", "europeana_demo_enhanced.png")
+                    new File(Paths.get("src", "main", "resources", "img", "europeana_demo_enhanced.png")
                             .toAbsolutePath()
                             .toString()));
         } catch (IOException e) {
