@@ -1,4 +1,12 @@
-# Table of Contents
+[![CI](https://github.com/europeana/metis-image-enhancer/actions/workflows/ci.yml/badge.svg)](https://github.com/europeana/metis-image-enhancer/actions/workflows/ci.yml) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=europeana_metis-image-enhancer&metric=coverage)](https://sonarcloud.io/summary/new_code?id=europeana_metis-image-enhancer)
+
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=europeana_metis-image-enhancer&metric=bugs)](https://sonarcloud.io/summary/new_code?id=europeana_metis-image-enhancer) [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=europeana_metis-image-enhancer&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=europeana_metis-image-enhancer)  
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=europeana_metis-image-enhancer&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=europeana_metis-image-enhancer) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=europeana_metis-image-enhancer&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=europeana_metis-image-enhancer)  
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=europeana_metis-image-enhancer&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=europeana_metis-image-enhancer) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=europeana_metis-image-enhancer&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=europeana_metis-image-enhancer)  
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=europeana_metis-image-enhancer&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=europeana_metis-image-enhancer)
+
+# Metis image enhancer repository
+## Table of Contents
 - [Table of Contents](#table-of-contents)
 - [About the Project](#about-the-project)
 - [Description](#description)
@@ -22,6 +30,9 @@ on small thumbnails, and performs a simple sharpen filter.
 # Built With
 * [Python](https://www.python.org/)
 * [Java](https://www.java.com)
+* [Test containers](https://testcontainers.com/)
+* [Junit](https://junit.org/junit5/)
+* [Archunit](https://www.archunit.org/)
 
 # Getting Started
 # Prerequisites and Dependencies
@@ -55,8 +66,8 @@ between the instances. If more computing power is needed the app can upscale to 
 
 ### 1. Image enhancement is possible with the command:
 ```shell
-curl --header "Content-Type: application/jpeg" \ 
---request POST \ http://localhost:5050/enhance/image 
+curl --request POST http://localhost:5050/enhance/image --form image=@./metis-image-enhancer-lib/src/test/resources/img/thumbnail.jpg \ 
+                                                        --output ./metis-image-enhancer-lib/src/test/resources/img/thumbnail_enhanced.jpg
 ```
 Response:
 ```
@@ -66,7 +77,7 @@ Response Body: Enhanced image to download
 ``` 
 
 ### 2. Client java library
-Note: Java and Maven are prerequisites.
+Note: Java and Maven are prerequisites, the library adds sharpen filter extra to the python api result.
 
 #### installation
 ```shell
@@ -74,15 +85,23 @@ mvn clean install
 ```
 
 #### usage
-add dependency
+add dependency in your project
 ````xml
 <dependency>
     <groupId>eu.europeana.metis.isr</groupId>
-    <artifactId>lib</artifactId>
+    <artifactId>metis-image-enhancer-lib</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <scope>compile</scope>
 </dependency>
 ````
+### properties
+By default, the following properties are set in the library if you want to change the address or port, and the timeout 
+are in seconds.
+```
+api.url = http://localhost:5050
+connect.timeout = 300
+read.timeout = 300
+```
 
 See demo project
 ```java
