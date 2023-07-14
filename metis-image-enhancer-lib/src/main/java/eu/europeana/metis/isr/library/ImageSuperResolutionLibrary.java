@@ -7,7 +7,7 @@ import eu.europeana.metis.isr.infrastructure.PythonApiEnhancer;
 /**
  * The type Super resolution library service.
  */
-public class ImageSuperResolutionLibrary {
+public final class ImageSuperResolutionLibrary {
 
     private ImageSuperResolutionLibrary() {
     }

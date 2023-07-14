@@ -68,14 +68,14 @@ if __name__=="__main__":
             # save it to memory in the original format
             raw_bytes = io.BytesIO()
             if kind.extension == 'jpg':
-                format = "jpeg"
+                img_format = "jpeg"
             elif kind.extension == 'tif':
-                format = "tiff"
+                img_format = "tiff"
             elif kind.extension == 'apng':
-                format = "png"
+                img_format = "png"
             else:
-                format = kind.extension
-            sr_img.save(raw_bytes, format)
+                img_format = kind.extension
+            sr_img.save(raw_bytes, img_format)
             raw_bytes.seek(0)
 
             #response file with bytes and mime type
