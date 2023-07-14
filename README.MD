@@ -148,14 +148,15 @@ The following image shows the outcome:
 # Design architecture
 ![architecture](./images/architecture.png)
 
-"The motivation behind the design summarizes in the following concept
-the communication goes from outer layers to the inner layers."
+The motivation behind the design summarizes in the following concept:
+"Communication goes from outer layers to the inner layers."
 
 - The library layer contains interactions details between the configuration and the library.
-- The configuration layer provides the properties needed to connect.
-- The infrastructure layer contains the adapter pattern implementation to plug in any thumbnail enhancement.
+- The configuration layer provides the properties needed to connect with the adapter.
+- The infrastructure layer contains the adapter pattern implementation to plug in any thumbnail adapter 
+  to do the image enhancement.
 - The domain contains the model and service core business logic, so this remains untouched by external changes
-of the outer layers as much as possible.
+  of the outer layers as much as possible.
 
 # Roadmap
 - [x] library initial release.
