@@ -20,7 +20,7 @@
     <dependencies>
         <dependency>
             <groupId>eu.europeana.metis.isr</groupId>
-            <artifactId>metis-image-enhancer-lib</artifactId>
+            <artifactId>metis-image-enhancer-client</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
