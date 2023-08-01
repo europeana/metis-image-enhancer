@@ -1,6 +1,7 @@
-package eu.europeana.metis.image.enhancement;
+package eu.europeana.metis.image.enhancement.model;
 
 import java.awt.image.BufferedImage;
+import java.io.InputStream;
 
 /**
  * The interface Thumbnail enhancer.
@@ -8,11 +9,18 @@ import java.awt.image.BufferedImage;
 public interface ImageEnhancer {
 
     /**
-     * Enhance image.
+     * Enhance buffered image.
      *
-     * @param input the image bytes
+     * @param imageToEnhance the image to enhance
      * @return the buffered image
      */
-    BufferedImage enhance(byte[] input);
+    BufferedImage enhance(InputStream imageToEnhance);
 
+    /**
+     * Enhance byte image.
+     *
+     * @param imageToEnhance the array of bytes of the image to enhance
+     * @return the array bytes of the enhanced image
+     */
+    byte[] enhance(byte[] imageToEnhance);
 }
