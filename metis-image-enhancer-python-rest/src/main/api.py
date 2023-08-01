@@ -4,12 +4,37 @@ import logging
 import socket
 import io
 import filetype
+import uuid
+import os
 
 from flask import Flask, request, jsonify, send_file
 from waitress import serve
 from error_handlers import errors
 from PIL import Image
 from ISR.models import RDN, RRDN
+
+
+def write_temp_file(content, filename=None, mode='wb'):
+    """Write content to a temporary file.
+
+    If passing binary data the mode needs to be set to 'wb'.
+
+    Args:
+        content (bytes|str): The file content.
+        filename (str, optional): The filename to use when writing the file. Defaults to None.
+        mode (str, optional): The write mode ('w' or 'wb'). Defaults to w.
+
+    Returns:
+        str: Fully qualified path name for the file.
+    """
+    if filename is None:
+        filename = str(uuid.uuid4())
+    fqpn = os.path.join('/tmp', filename)
+    os.makedirs(os.path.dirname(fqpn), exist_ok=True)
+    with open(fqpn, mode) as fh:
+        fh.write(content)
+    return fqpn
+
 
 if __name__=="__main__":
     app = Flask(__name__)
@@ -42,8 +67,9 @@ if __name__=="__main__":
         """Return the content-type image enhanced."""
         if request.method == 'POST':
             app.logger.info('POST request running on host: ' + socket.gethostname())
-            image_file = request.files['image']
-
+            #image_file = request.files['image']
+            byte_file = request.data
+            image_file = Image.open(write_temp_file(byte_file))
             # find image format
             kind = filetype.guess(image_file.stream)
             if kind is None or kind.extension not in ['jpg', 'bmp', 'gif', 'tif', 'png', 'apng', 'ico']:
