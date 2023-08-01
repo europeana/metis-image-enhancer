@@ -1,17 +1,12 @@
-package eu.europeana.metis.isr;
+package eu.europeana.metis.image.enhancement;
 
-import eu.europeana.metis.image.enhancement.ImageEnhancerWorker;
+import eu.europeana.metis.image.enhancement.domain.worker.ImageEnhancerWorker;
 import eu.europeana.metis.image.enhancement.client.ImageEnhancerClient;
 import eu.europeana.metis.image.enhancement.config.ImageEnhancerClientConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.invoke.MethodHandles;

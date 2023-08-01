@@ -9,7 +9,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>eu.europeana.metis.isr</groupId>
+    <groupId>eu.europeana.metis.image.enhancement</groupId>
     <artifactId>metis-image-enhancer-client</artifactId>
 
     <properties>

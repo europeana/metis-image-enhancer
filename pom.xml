@@ -18,6 +18,7 @@
 		<version.spring>2.7.11</version.spring>
 		<version.junit>5.9.3</version.junit>
 		<version.mockito>5.4.0</version.mockito>
+		<version.archunit>1.0.1</version.archunit>
 		<version.maven.resources.plugin>3.2.0</version.maven.resources.plugin>
 		<version.maven.compiler.plugin>3.8.1</version.maven.compiler.plugin>
 		<version.surefire.plugin>2.22.1</version.surefire.plugin>
@@ -59,6 +60,12 @@
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
 			<version>${version.mockito}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.tngtech.archunit</groupId>
+			<artifactId>archunit-junit5</artifactId>
+			<version>${version.archunit}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

@@ -1,6 +1,6 @@
-package eu.europeana.metis.image.enhancement;
+package eu.europeana.metis.image.enhancement.domain.worker;
 
-import eu.europeana.metis.image.enhancement.model.ImageEnhancer;
+import eu.europeana.metis.image.enhancement.domain.model.ImageEnhancer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

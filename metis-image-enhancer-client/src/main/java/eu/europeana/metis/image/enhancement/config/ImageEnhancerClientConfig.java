@@ -7,15 +7,19 @@ import org.springframework.stereotype.Component;
 /**
  * The type Lib Configuration
  */
-@Component
 public class ImageEnhancerClientConfig {
 
-    @Value("${isr.api.url}")
-    private String isrApiUrl;
-    @Value("${isr.connect.timeout}")
-    private int isrConnectTimeout;
-    @Value("${isr.read.timeout}")
-    private int isrReadTimeout;
+    private final String isrApiUrl;
+    private final int isrConnectTimeout;
+    private final int isrReadTimeout;
+
+    public ImageEnhancerClientConfig(String url,
+                                     int connectTimeout,
+                                     int readTimeout) {
+        this.isrApiUrl = url;
+        this.isrConnectTimeout = connectTimeout;
+        this.isrReadTimeout = readTimeout;
+    }
 
     public String getIsrApiUrl() {
         return isrApiUrl;
