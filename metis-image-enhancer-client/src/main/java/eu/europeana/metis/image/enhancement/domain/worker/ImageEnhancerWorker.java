@@ -58,12 +58,12 @@ public class ImageEnhancerWorker {
 
     /**
      * Get the image format 'jpeg/png/bmp/tif' if not found png is returned by default
-     * @param byteArrayInputStream
+     * @param byteArrayInputStream contains image information
      * @return format name
      */
     private static String getImageFormat(ByteArrayInputStream byteArrayInputStream) {
         String format = "png";
-        try (ImageInputStream iis = ImageIO.createImageInputStream(byteArrayInputStream);) {
+        try (ImageInputStream iis = ImageIO.createImageInputStream(byteArrayInputStream)) {
 
             Iterator<ImageReader> readers = ImageIO.getImageReaders(iis);
 
@@ -79,16 +79,16 @@ public class ImageEnhancerWorker {
 
     /**
      * Sharpen blurry image after AI enhancement
-     * @param sharpenImage
-     * @return BufferedImage enhanced
+     * @param imageToSharpen image to be sharpened
+     * @return BufferedImage sharpened image
      */
-    private BufferedImage sharpen(BufferedImage sharpenImage) {
+    private BufferedImage sharpen(BufferedImage imageToSharpen) {
         Kernel kernel = new Kernel(3, 3,
                 new float[] { 0, -1, 0,
                         -1, 5, -1,
                         0, -1, 0});
         BufferedImageOp op = new ConvolveOp(kernel);
-        sharpenImage = op.filter(sharpenImage, null);
-        return sharpenImage;
+        imageToSharpen = op.filter(imageToSharpen, null);
+        return imageToSharpen;
     }
 }

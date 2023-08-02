@@ -15,12 +15,20 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Objects;
 
+/**
+ * The type Runner.
+ */
 public class Runner implements CommandLineRunner {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     private final ImageEnhancerClientConfig imageEnhancerClientConfig;
 
+    /**
+     * Instantiates a new Runner.
+     *
+     * @param imageEnhancerClientConfig the image enhancer client config
+     */
     public Runner(ImageEnhancerClientConfig imageEnhancerClientConfig) {
         this.imageEnhancerClientConfig = imageEnhancerClientConfig;
     }
