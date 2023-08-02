@@ -6,10 +6,10 @@
     <parent>
         <groupId>eu.europeana.metis</groupId>
         <artifactId>metis-image-enhancer</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1-SNAPSHOT</version>
     </parent>
 
-    <groupId>eu.europeana.metis.isr</groupId>
+    <groupId>eu.europeana.metis.image.enhancement</groupId>
     <artifactId>metis-image-enhancer-demo</artifactId>
 
     <properties>
@@ -21,7 +21,7 @@
         <dependency>
             <groupId>eu.europeana.metis.image.enhancement</groupId>
             <artifactId>metis-image-enhancer-client</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
