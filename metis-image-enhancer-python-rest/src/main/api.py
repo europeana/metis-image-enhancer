@@ -5,7 +5,7 @@ import socket
 import io
 import filetype
 
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, request, jsonify, send_file, make_response
 from waitress import serve
 from error_handlers import errors
 from PIL import Image
@@ -23,7 +23,7 @@ if __name__=="__main__":
     model = RDN(weights='noise-cancel')
     end = time.time()
 
-    # modal elapsed time
+    # model elapsed time
     app.logger.info('loading model elapsed time: %ds', end - start)
 
     @app.route("/")
@@ -41,11 +41,12 @@ if __name__=="__main__":
     def enhance_image():
         """Return the content-type image enhanced."""
         if request.method == 'POST':
+            start_process = time.time()
             app.logger.info('POST request running on host: ' + socket.gethostname())
-            image_file = request.files['image']
+            image_data = request.data
 
             # find image format
-            kind = filetype.guess(image_file.stream)
+            kind = filetype.guess(image_data)
             if kind is None or kind.extension not in ['jpg', 'bmp', 'gif', 'tif', 'png', 'apng', 'ico']:
                 if kind is None:
                     description = 'file type not supported!'
@@ -59,7 +60,7 @@ if __name__=="__main__":
                 app.logger.warning(description)
                 return jsonify(response)
             # convert image to RGB format with white background
-            img = Image.open(image_file.stream).convert("RGBA")
+            img = Image.open(io.BytesIO(image_data)).convert("RGBA")
             rgb_img = Image.new("RGBA", img.size, "WHITE")
             rgb_img.paste(img, mask=img)
             sr_img = model.predict(np.array(rgb_img.convert("RGB")))
@@ -79,7 +80,11 @@ if __name__=="__main__":
             raw_bytes.seek(0)
 
             #response file with bytes and mime type
-            return send_file(raw_bytes, mimetype=kind.mime)
+            response = make_response(send_file(raw_bytes, mimetype=kind.mime))
+            # processing elapsed time
+            end_process = time.time()
+            response.headers['Elapsed-Time'] = end_process - start_process
+            return response
 
         if request.method == 'GET':
             app.logger.info('GET request running on host: ' + socket.gethostname())

@@ -1,30 +1,52 @@
 package eu.europeana.metis.image.enhancement.config;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
-
 /**
  * The type Lib Configuration
  */
-@Component
 public class ImageEnhancerClientConfig {
 
-    @Value("${isr.api.url}")
-    private String isrApiUrl;
-    @Value("${isr.connect.timeout}")
-    private int isrConnectTimeout;
-    @Value("${isr.read.timeout}")
-    private int isrReadTimeout;
+    private final String isrApiUrl;
+    private final int isrConnectTimeout;
+    private final int isrReadTimeout;
 
+    /**
+     * Instantiates a new Image enhancer client configuration.
+     *
+     * @param url            the url
+     * @param connectTimeout the connect timeout
+     * @param readTimeout    the read timeout
+     */
+    public ImageEnhancerClientConfig(String url,
+                                     int connectTimeout,
+                                     int readTimeout) {
+        this.isrApiUrl = url;
+        this.isrConnectTimeout = connectTimeout;
+        this.isrReadTimeout = readTimeout;
+    }
+
+    /**
+     * Gets isr api url.
+     *
+     * @return the isr api url
+     */
     public String getIsrApiUrl() {
         return isrApiUrl;
     }
 
+    /**
+     * Gets isr connect timeout.
+     *
+     * @return the isr connect timeout
+     */
     public int getIsrConnectTimeout() {
         return isrConnectTimeout;
     }
 
+    /**
+     * Gets isr read timeout.
+     *
+     * @return the isr read timeout
+     */
     public int getIsrReadTimeout() {
         return isrReadTimeout;
     }

@@ -1,24 +1,17 @@
 package eu.europeana.metis.image.enhancement.client;
 
-import eu.europeana.metis.image.enhancement.ImageEnhancer;
 import eu.europeana.metis.image.enhancement.config.ImageEnhancerClientConfig;
+import eu.europeana.metis.image.enhancement.domain.model.ImageEnhancer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -34,9 +27,9 @@ public class ImageEnhancerClient implements ImageEnhancer {
     private final Integer connectTimeOut;
     private final Integer readTimeOut;
 
-
     /**
      * Constructor
+     *
      * @param imageEnhancerClientConfig the image enhancer configuration
      */
     public ImageEnhancerClient(ImageEnhancerClientConfig imageEnhancerClientConfig) {
@@ -46,23 +39,20 @@ public class ImageEnhancerClient implements ImageEnhancer {
     }
 
     @Override
-    public BufferedImage enhance(byte[] input) {
+    public byte[] enhance(byte[] imageToEnhance) {
         final URI uri;
+        byte [] imageEnhanced = new byte[0];
         try {
             uri = new URI(apiURL + "/enhance/image");
         } catch (URISyntaxException e) {
             LOGGER.error("Error with API URL", e);
-            return null;
+            return imageEnhanced;
         }
 
         final HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 
-        // Create the request body as a MultiValueMap
-        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        body.add("image", input);
-
-        final HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(body, headers);
+        final HttpEntity<byte[]> httpEntity = new HttpEntity<>(imageToEnhance, headers);
 
         final RestTemplate restTemplate = new RestTemplateBuilder()
                 .setConnectTimeout(Duration.ofSeconds(this.connectTimeOut))
@@ -70,18 +60,19 @@ public class ImageEnhancerClient implements ImageEnhancer {
                 .build();
         final ResponseEntity<byte[]> response = restTemplate.postForEntity(uri, httpEntity, byte[].class);
 
-        BufferedImage outputBufferedImage = null;
+
         if (response.getStatusCode().is2xxSuccessful()) {
-            LOGGER.info("Image processed successfully!");
-            try {
-                outputBufferedImage = ImageIO.read(new ByteArrayInputStream(Objects.requireNonNull(response.getBody())));
-            } catch (IOException e) {
-                LOGGER.error("processing image", e);
+            if (response.getHeaders().containsKey("Elapsed-Time")) {
+                LOGGER.info("Image processed successfully! Elapsed Time: {}", response.getHeaders().get("Elapsed-Time"));
+            } else {
+                LOGGER.info("Image processed successfully!");
             }
+            ByteArrayInputStream responseByteArrayStream = new ByteArrayInputStream(Objects.requireNonNull(response.getBody()));
+            imageEnhanced = responseByteArrayStream.readAllBytes();
         } else {
             LOGGER.error("Failed to process image. Response code: {}", response.getStatusCodeValue());
         }
 
-        return outputBufferedImage;
+        return imageEnhanced;
     }
 }

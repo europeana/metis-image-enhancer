@@ -1,4 +1,4 @@
-package eu.europeana.metis.isr;
+package eu.europeana.metis.image.enhancement;
 
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
