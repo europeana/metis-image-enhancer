@@ -47,7 +47,7 @@ git clone https://github.com/europeana/metis-image-enhancer.git
 ```
 
 ### Build docker ISR API
-go to the cloned folder of the library /metis-image-enhancer/metis-image-enhancer-lib/src/main/resources/isr,
+go to the cloned folder of the library /metis-image-enhancer/metis-image-enhancer-python-rest/src/main,
 and run the following command to build the image enhancer application
 ```shell
 docker compose build --no-cache
@@ -55,19 +55,18 @@ docker compose build --no-cache
 
 # Usage
 #### Enable Python API Endpoint for image enhancement
-go to the cloned folder of the library /metis-image-enhancer/metis-image-enhancer-lib/src/main/resources/isr, 
-and run the following commands to get the service up and running.
-this will run with 3 nodes
+go to the cloned folder of the library /metis-image-enhancer/metis-image-enhancer-python-rest/src/main, 
+and run the following commands to get the service up and running 
+this command will run with 1 node
 ```shell
-docker compose up --scale israpp=3
+docker compose up 
 ```
-the application uses a nginx server to load balance the requests using the least connection algorithm
-between the instances. If more computing power is needed the app can upscale to the amount of resources needed.
+the application uses a python api to enhance the image
 
 ### 1. Image enhancement is possible with the command:
 ```shell
-curl --request POST http://localhost:5050/enhance/image --form image=@./metis-image-enhancer-lib/src/test/resources/img/thumbnail.jpg \ 
-                                                        --output ./metis-image-enhancer-lib/src/test/resources/img/thumbnail_enhanced.jpg
+curl --request POST http://localhost:5050/enhance/image --form image=@./metis-image-enhancer-client/src/test/resources/img/thumbnail.jpg \ 
+                                                        --output ./metis-image-enhancer-client/src/test/resources/img/thumbnail_enhanced.jpg
 ```
 Response:
 ```
@@ -77,7 +76,8 @@ Response Body: Enhanced image to download
 ``` 
 
 ### 2. Client java library
-Note: Java and Maven are prerequisites, the library adds sharpen filter extra to the python api result.
+Note: Java and Maven are prerequisites, the client adds sharpen filter extra to the python api result to improve the
+end result.
 
 #### installation
 ```shell
@@ -88,8 +88,8 @@ mvn clean install
 add dependency in your project
 ````xml
 <dependency>
-    <groupId>eu.europeana.metis.isr</groupId>
-    <artifactId>metis-image-enhancer-lib</artifactId>
+    <groupId>eu.europeana.metis.image.enhancement</groupId>
+    <artifactId>metis-image-enhancer-client</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <scope>compile</scope>
 </dependency>
@@ -128,15 +128,16 @@ The following image shows the outcome:
 The motivation behind the design summarizes in the following concept:
 "Communication goes from outer layers to the inner layers."
 
-- The library layer contains interactions details between the configuration and the library.
-- The configuration layer provides the properties needed to connect with the adapter.
-- The infrastructure layer contains the adapter pattern implementation to plug in any thumbnail adapter 
-  to do the image enhancement.
-- The domain contains the model and service core business logic, so this remains untouched by external changes
-  of the outer layers as much as possible.
+- The client layer contains interactions details between the configuration and the domain.
+- The configuration layer provides the properties needed to connect with the isr app.
+- The domain layer uses the adapter pattern implementation to plug in any client adapter implementation 
+  to do the image enhancement. It contains the model and worker core business logic, so this remains untouched 
+  by external changes of the outer layers as much as possible.
 
 # Roadmap
 - [x] library initial release.
+- [x] restructure to metis style projects.
+- [x] use stream of bytes instead of file.
 - [ ] ...
 
 # Contributing

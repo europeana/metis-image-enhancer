@@ -36,8 +36,8 @@ public class ImageEnhancerWorker {
     /**
      * Enhance image
      *
-     * @param input the input image
-     * @return output buffered image
+     * @param input the input array bytes of an image
+     * @return output byte array bytes of an image
      */
     public byte [] enhance(byte[] input) {
         final BufferedImage image;
@@ -46,27 +46,42 @@ public class ImageEnhancerWorker {
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(imageEnhancer.enhance(input));
             image = ImageIO.read(byteArrayInputStream);
 
-            String format = "png";
-            try (ImageInputStream iis = ImageIO.createImageInputStream(byteArrayInputStream);) {
-
-                Iterator<ImageReader> readers = ImageIO.getImageReaders(iis);
-
-                if (readers.hasNext()) {
-                    ImageReader reader = readers.next();
-                    format = reader.getFormatName();
-                }
-            } catch (IOException e) {
-                LOGGER.error("Determining image format", e);
-            }
+            final String format = getImageFormat(byteArrayInputStream);
 
             ImageIO.write(sharpen(image),format,baos);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            LOGGER.error("enhancing the image", e);
         }
 
         return baos.toByteArray();
     }
 
+    /**
+     * Get the image format 'jpeg/png/bmp/tif' if not found png is returned by default
+     * @param byteArrayInputStream
+     * @return format name
+     */
+    private static String getImageFormat(ByteArrayInputStream byteArrayInputStream) {
+        String format = "png";
+        try (ImageInputStream iis = ImageIO.createImageInputStream(byteArrayInputStream);) {
+
+            Iterator<ImageReader> readers = ImageIO.getImageReaders(iis);
+
+            if (readers.hasNext()) {
+                ImageReader reader = readers.next();
+                format = reader.getFormatName();
+            }
+        } catch (IOException e) {
+            LOGGER.error("Determining image format", e);
+        }
+        return format;
+    }
+
+    /**
+     * Sharpen blurry image after AI enhancement
+     * @param sharpenImage
+     * @return BufferedImage enhanced
+     */
     private BufferedImage sharpen(BufferedImage sharpenImage) {
         Kernel kernel = new Kernel(3, 3,
                 new float[] { 0, -1, 0,

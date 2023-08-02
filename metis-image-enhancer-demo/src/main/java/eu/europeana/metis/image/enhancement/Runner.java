@@ -38,7 +38,6 @@ public class Runner implements CommandLineRunner {
                     .toAbsolutePath(), imageEnhancerWorker.enhance(sourceFile), StandardOpenOption.CREATE);
         } catch (IOException e) {
             LOGGER.error("saving image file", e);
-            System.exit(1);
         }
     }
 }

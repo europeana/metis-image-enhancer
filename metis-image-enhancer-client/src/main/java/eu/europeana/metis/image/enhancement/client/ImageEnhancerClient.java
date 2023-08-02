@@ -41,11 +41,12 @@ public class ImageEnhancerClient implements ImageEnhancer {
     @Override
     public byte[] enhance(byte[] imageToEnhance) {
         final URI uri;
+        byte [] imageEnhanced = new byte[0];
         try {
             uri = new URI(apiURL + "/enhance/image");
         } catch (URISyntaxException e) {
             LOGGER.error("Error with API URL", e);
-            return null;
+            return imageEnhanced;
         }
 
         final HttpHeaders headers = new HttpHeaders();
@@ -59,18 +60,19 @@ public class ImageEnhancerClient implements ImageEnhancer {
                 .build();
         final ResponseEntity<byte[]> response = restTemplate.postForEntity(uri, httpEntity, byte[].class);
 
-        ByteArrayInputStream responseByteArrayStream = null;
+
         if (response.getStatusCode().is2xxSuccessful()) {
             if (response.getHeaders().containsKey("Elapsed-Time")) {
                 LOGGER.info("Image processed successfully! Elapsed Time: {}", response.getHeaders().get("Elapsed-Time"));
             } else {
                 LOGGER.info("Image processed successfully!");
             }
-            responseByteArrayStream = new ByteArrayInputStream(Objects.requireNonNull(response.getBody()));
+            ByteArrayInputStream responseByteArrayStream = new ByteArrayInputStream(Objects.requireNonNull(response.getBody()));
+            imageEnhanced = responseByteArrayStream.readAllBytes();
         } else {
             LOGGER.error("Failed to process image. Response code: {}", response.getStatusCodeValue());
         }
 
-        return responseByteArrayStream.readAllBytes();
+        return imageEnhanced;
     }
 }
