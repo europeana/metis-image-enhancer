@@ -18,3 +18,14 @@ jobs:
     secrets:
       ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
       ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
+
+  docker-build_metis-image-enhancer-python-rest:
+    needs: ci
+    uses: europeana/metis-actions/.github/workflows/docker-build-push.yml@main
+    with:
+      docker-organization: europeana
+      docker-image-name: metis-image-enhancer-python-rest
+      project-path: metis-image-enhancer-python-rest/
+    secrets:
+      DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+      DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
