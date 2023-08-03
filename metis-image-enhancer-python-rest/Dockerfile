@@ -19,6 +19,7 @@ RUN git clone https://github.com/idealo/image-super-resolution.git \
 
 COPY src/main/api.py .
 COPY src/main/error_handlers.py .
+EXPOSE 8080
 CMD python3 api.py
 
 
