@@ -4,18 +4,19 @@ import logging
 import socket
 import io
 import filetype
+import gc
 
 from flask import Flask, request, jsonify, send_file, make_response
 from waitress import serve
 from error_handlers import errors
 from PIL import Image
-from ISR.models import RDN, RRDN
+from ISR.models import RDN
 
 if __name__=="__main__":
     app = Flask(__name__)
     app.register_blueprint(errors)
     host = '0.0.0.0'
-    port = 8080
+    port = 5050
     app.logger.setLevel(logging.INFO)
 
     # Load the prediction model. Can be initialized once and then reused?
@@ -63,7 +64,7 @@ if __name__=="__main__":
             img = Image.open(io.BytesIO(image_data)).convert("RGBA")
             rgb_img = Image.new("RGBA", img.size, "WHITE")
             rgb_img.paste(img, mask=img)
-            sr_img = model.predict(np.array(rgb_img.convert("RGB")))
+            sr_img = model.predict(np.array(rgb_img.convert("RGB")), by_patch_of_size=16)
             sr_img = Image.fromarray(sr_img)
 
             # save it to memory in the original format
@@ -84,6 +85,13 @@ if __name__=="__main__":
             # processing elapsed time
             end_process = time.time()
             response.headers['Elapsed-Time'] = end_process - start_process
+
+            del raw_bytes
+            del sr_img
+            del rgb_img
+            del img
+            del image_data
+            gc.collect()
             return response
 
         if request.method == 'GET':
