@@ -16,7 +16,7 @@ if __name__=="__main__":
     app = Flask(__name__)
     app.register_blueprint(errors)
     host = '0.0.0.0'
-    port = 5050
+    port = 8080
     app.logger.setLevel(logging.INFO)
 
     # Load the prediction model. Can be initialized once and then reused?
