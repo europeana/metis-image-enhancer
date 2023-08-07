@@ -4,7 +4,6 @@ import logging
 import socket
 import io
 import filetype
-import gc
 
 from flask import Flask, request, jsonify, send_file, make_response
 from waitress import serve
@@ -64,8 +63,9 @@ if __name__=="__main__":
             img = Image.open(io.BytesIO(image_data)).convert("RGBA")
             rgb_img = Image.new("RGBA", img.size, "WHITE")
             rgb_img.paste(img, mask=img)
-            sr_img = model.predict(np.array(rgb_img.convert("RGB")), by_patch_of_size=16)
-            sr_img = Image.fromarray(sr_img)
+
+            sr_mod = model.predict(np.array(rgb_img.convert("RGB")), by_patch_of_size=24)
+            sr_img = Image.fromarray(sr_mod)
 
             # save it to memory in the original format
             raw_bytes = io.BytesIO()
@@ -82,17 +82,19 @@ if __name__=="__main__":
 
             #response file with bytes and mime type
             response = make_response(send_file(raw_bytes, mimetype=kind.mime))
+
             # processing elapsed time
             end_process = time.time()
             response.headers['Elapsed-Time'] = end_process - start_process
 
             del raw_bytes
+            del sr_mod
             del sr_img
             del rgb_img
             del img
             del image_data
-            gc.collect()
-            return response
+
+            return response, 200
 
         if request.method == 'GET':
             app.logger.info('GET request running on host: ' + socket.gethostname())
