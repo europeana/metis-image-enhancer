@@ -8,6 +8,7 @@ RUN pip3 install --upgrade pip
 RUN pip3 install filetype
 RUN pip3 install Flask
 RUN pip3 install waitress
+RUN pip3 install uuid
 RUN pip3 install tensorflow==2.13.0
 
 RUN git clone https://github.com/idealo/image-super-resolution.git \
@@ -18,6 +19,7 @@ RUN git clone https://github.com/idealo/image-super-resolution.git \
      && python3 setup.py install
 
 COPY src/main/api.py .
+COPY src/main/mie.py .
 COPY src/main/error_handlers.py .
 EXPOSE 8080
 CMD python3 api.py
