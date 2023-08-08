@@ -12,6 +12,7 @@
 		<module>metis-image-enhancer-demo</module>
 		<module>metis-image-enhancer-client</module>
         <module>metis-image-enhancer-python-rest</module>
+        <module>metis-image-enhancer-python-script</module>
     </modules>
 	<properties>
 		<java.version>11</java.version>

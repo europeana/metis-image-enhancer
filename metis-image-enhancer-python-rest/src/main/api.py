@@ -1,15 +1,17 @@
-import numpy as np
 import time
 import logging
 import socket
-import io
+import os
 import filetype
+import uuid
+import subprocess
+import io
 
 from flask import Flask, request, jsonify, send_file, make_response
 from waitress import serve
 from error_handlers import errors
 from PIL import Image
-from ISR.models import RDN
+
 
 if __name__=="__main__":
     app = Flask(__name__)
@@ -17,14 +19,6 @@ if __name__=="__main__":
     host = '0.0.0.0'
     port = 8080
     app.logger.setLevel(logging.INFO)
-
-    # Load the prediction model. Can be initialized once and then reused?
-    start = time.time()
-    model = RDN(weights='noise-cancel')
-    end = time.time()
-
-    # model elapsed time
-    app.logger.info('loading model elapsed time: %ds', end - start)
 
     @app.route("/")
     def index():
@@ -59,15 +53,17 @@ if __name__=="__main__":
                 }
                 app.logger.warning(description)
                 return jsonify(response)
-            # convert image to RGB format with white background
-            img = Image.open(io.BytesIO(image_data)).convert("RGBA")
-            rgb_img = Image.new("RGBA", img.size, "WHITE")
-            rgb_img.paste(img, mask=img)
-
-            sr_mod = model.predict(np.array(rgb_img.convert("RGB")), by_patch_of_size=24)
-            sr_img = Image.fromarray(sr_mod)
+            seed_file = str(uuid.uuid4())
+            input_file = "/tmp/"+seed_file+".img"
+            output_file = "/tmp/"+seed_file+"_out.img"
+            app.logger.info('temporary files created')
+            with open(input_file,"wb") as in_fp:
+                in_fp.write(image_data)
+            command = "python3 mie.py --input '{0}' --output '{1}'".format(input_file, output_file)
+            subprocess.check_output([command], shell=True)
 
             # save it to memory in the original format
+            sr_img = Image.open(output_file)
             raw_bytes = io.BytesIO()
             if kind.extension == 'jpg':
                 img_format = "jpeg"
@@ -83,15 +79,14 @@ if __name__=="__main__":
             #response file with bytes and mime type
             response = make_response(send_file(raw_bytes, mimetype=kind.mime))
 
+            os.remove(input_file)
+            os.remove(output_file)
+            app.logger.info('temporary files removed')
             # processing elapsed time
             end_process = time.time()
             response.headers['Elapsed-Time'] = end_process - start_process
 
             del raw_bytes
-            del sr_mod
-            del sr_img
-            del rgb_img
-            del img
             del image_data
 
             return response, 200

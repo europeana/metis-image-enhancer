@@ -55,7 +55,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>eu.europeana.metis.isr.Main</mainClass>
+                            <mainClass>eu.europeana.metis.image.enhancement.Application</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
