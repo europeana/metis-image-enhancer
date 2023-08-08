@@ -52,7 +52,8 @@ public class ImageEnhancerScript implements ImageEnhancer {
             final String inputFile = tempImageFile.getAbsolutePath();
             final String outputFile = tempImageFile.getAbsolutePath().replace(".img", "_out.img");
 
-            ProcessBuilder processBuilder = new ProcessBuilder("python3", "../metis-image-enhancer-python-script/src/main/mie.py",
+            ProcessBuilder processBuilder = new ProcessBuilder("python3",
+                    "../metis-image-enhancer-python-script/src/main/mie.py",
                     "--input", inputFile,"--output", outputFile);
             processBuilder.redirectErrorStream(true);
 
@@ -74,7 +75,7 @@ public class ImageEnhancerScript implements ImageEnhancer {
             LOGGER.error("creating temporary image file", e);
         } catch (InterruptedException e) {
             LOGGER.error("in processing", e);
-
+            Thread.currentThread().interrupt();
         }
 
         return enhancedImage;
