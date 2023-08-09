@@ -23,8 +23,19 @@ import java.util.UUID;
  */
 public class ImageEnhancerScript implements ImageEnhancer {
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    private static final String PYTHON = "python3";
+    private final String pathToScript;
 
-    private static File getTempImageFile(byte[] imageToEnhance, UUID uuid) throws IOException {
+    /**
+     * Instantiates a new Image enhancer script.
+     *
+     * @param pathToScript the path to script
+     */
+    public ImageEnhancerScript(String pathToScript) {
+        this.pathToScript = pathToScript;
+    }
+
+    private File getTempImageFile(byte[] imageToEnhance, UUID uuid) throws IOException {
         File tempImageFile = File.createTempFile(uuid.toString(), ".img");
         try (FileOutputStream fos = new FileOutputStream(tempImageFile)) {
             fos.write(imageToEnhance);
@@ -52,9 +63,8 @@ public class ImageEnhancerScript implements ImageEnhancer {
             final String inputFile = tempImageFile.getAbsolutePath();
             final String outputFile = tempImageFile.getAbsolutePath().replace(".img", "_out.img");
 
-            ProcessBuilder processBuilder = new ProcessBuilder("python3",
-                    "../metis-image-enhancer-python-script/src/main/mie.py",
-                    "--input", inputFile,"--output", outputFile);
+            ProcessBuilder processBuilder = new ProcessBuilder(PYTHON, this.pathToScript,
+                    "--input", inputFile, "--output", outputFile);
             processBuilder.redirectErrorStream(true);
 
             Process process = processBuilder.start();

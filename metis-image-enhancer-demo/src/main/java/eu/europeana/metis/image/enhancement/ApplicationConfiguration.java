@@ -14,11 +14,13 @@ import org.springframework.context.annotation.Configuration;
 public class ApplicationConfiguration {
 
     @Value("${isr.api.url}")
-    private String isrApiUrl;
+    private String apiURL;
     @Value("${isr.connect.timeout}")
-    private int isrConnectTimeout;
+    private int connectTimeout;
     @Value("${isr.read.timeout}")
-    private int isrReadTimeout;
+    private int readTimeout;
+    @Value("${isr.script}")
+    private String pathToScript;
 
     /**
      * Gets image enhancer client configuration.
@@ -27,7 +29,7 @@ public class ApplicationConfiguration {
      */
     @Bean
     public ImageEnhancerClientConfig getImageEnhancerClientConfig() {
-        return new ImageEnhancerClientConfig(isrApiUrl, isrConnectTimeout, isrReadTimeout);
+        return new ImageEnhancerClientConfig(apiURL, connectTimeout, readTimeout);
     }
 
     /**
@@ -50,6 +52,6 @@ public class ApplicationConfiguration {
     @Bean(name = "scriptCommandLineRunner")
     @ConditionalOnProperty(prefix = "worker", name = "service.type", havingValue = "script", matchIfMissing = true)
     public CommandLineRunner commandLineRunner() {
-        return new ScriptRunner();
+        return new ScriptRunner( pathToScript);
     }
 }
