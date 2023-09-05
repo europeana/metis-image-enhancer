@@ -70,7 +70,8 @@ public class ImageEnhancerWorker {
 
             final String format = getImageFormat(input);
 
-            ImageIO.write(sharpen(image), format, baos);
+//            ImageIO.write(sharpen(image), format, baos);
+            ImageIO.write(image, format, baos);
         } catch (IOException e) {
             LOGGER.error("enhancing the image", e);
         }
