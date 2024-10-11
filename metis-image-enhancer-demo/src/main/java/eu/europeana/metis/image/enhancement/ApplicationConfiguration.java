@@ -38,11 +38,11 @@ public class ApplicationConfiguration {
      * @param imageEnhancerClientConfig the image enhancer client configuration
      * @return the command line runner
      */
-//    @Bean(name = "apiCommandLineRunner")
-//    @ConditionalOnProperty(prefix = "worker", name = "service.type", havingValue = "api")
-//    public CommandLineRunner commandLineRunner(ImageEnhancerClientConfig imageEnhancerClientConfig) {
-//        return new Runner(imageEnhancerClientConfig);
-//    }
+    @Bean(name = "apiCommandLineRunner")
+    @ConditionalOnProperty(prefix = "worker", name = "service.type", havingValue = "api")
+    public CommandLineRunner apiCommandLineRunner(ImageEnhancerClientConfig imageEnhancerClientConfig) {
+        return new Runner(imageEnhancerClientConfig);
+    }
 
     /**
      * Command line runner for script.
@@ -51,7 +51,7 @@ public class ApplicationConfiguration {
      */
     @Bean(name = "scriptCommandLineRunner")
     @ConditionalOnProperty(prefix = "worker", name = "service.type", havingValue = "script", matchIfMissing = true)
-    public CommandLineRunner commandLineRunner() {
+    public CommandLineRunner scriptCommandLineRunner() {
         return new ScriptRunner( pathToScript);
     }
 }

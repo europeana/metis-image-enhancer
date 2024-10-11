@@ -13,8 +13,8 @@
     <artifactId>metis-image-enhancer-demo</artifactId>
 
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
@@ -65,8 +65,10 @@
             <!-- We make sure to include files with the build artifacts. -->
             <resource>
                 <directory>src/main/resources</directory>
+                <filtering>true</filtering>
                 <includes>
                     <include>**/*.png</include>
+                    <include>**/*.properties</include>
                 </includes>
             </resource>
         </resources>

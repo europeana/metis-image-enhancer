@@ -19,7 +19,7 @@ def parameters(argv):
     params = dict()
 
     try:
-        opts = getopt.getopt(argv[1:], "hio:v", ["help", "input=", "output="])
+        opts, args = getopt.getopt(argv[1:], "hio:v", ["help", "input=", "output="])
     except:
         print(arg_help)
         sys.exit(2)

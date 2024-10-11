@@ -65,7 +65,7 @@ the application uses a python api to enhance the image
 
 ### 1. Image enhancement is possible with the command:
 ```shell
-curl --request POST http://localhost:5050/enhance/image --form image=@./metis-image-enhancer-client/src/test/resources/img/thumbnail.jpg \ 
+curl --request POST http://localhost:8080/enhance/image --form image=@./metis-image-enhancer-client/src/test/resources/img/thumbnail.jpg \ 
                                                         --output ./metis-image-enhancer-client/src/test/resources/img/thumbnail_enhanced.jpg
 ```
 Response:
@@ -97,7 +97,7 @@ add dependency in your project
 By default, the following properties are set in the library if you want to change the address or port, and the timeout 
 are in seconds.
 ```
-api.url = http://localhost:5050
+api.url = http://localhost:8080
 connect.timeout = 300
 read.timeout = 300
 ```
@@ -122,9 +122,9 @@ the /metis-image-enhancer/metis-image-enhancer-demo
 ```shell
 mvn clean package
 ```
-execute the app
+execute the app e.g.
 ``` 
-java -jar ./target/metis-image-enhancer-demo-0.0.1-SNAPSHOT.jar
+java -jar ./target/metis-image-enhancer-demo-1-SNAPSHOT.jar
 ```
 example of demo code can be found in the metis-image-enhancer-demo module.
 
