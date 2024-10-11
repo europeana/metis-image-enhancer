@@ -16,10 +16,10 @@ print('working dir:', workingdirectory)
 # Arguments
 def parameters(argv):
     arg_help = "{0} -i <input> -o <output>".format(argv[0])
-    params = dict();
+    params = dict()
 
     try:
-        opts, args = getopt.getopt(argv[1:], "hio:v", ["help", "input=", "output="])
+        opts = getopt.getopt(argv[1:], "hio:v", ["help", "input=", "output="])
     except:
         print(arg_help)
         sys.exit(2)
@@ -84,9 +84,9 @@ def main(params):
     # elapsed time
     print ('loading model elapsed time: ',end - start)
     # Declare the input and output file locations
-    inputFile = r'{0}'.format(params['arg_input']).strip()
-    outputFile = r'{0}'.format(params['arg_output']).strip()
-    enhance(inputFile, outputFile, model)
+    input_file = r'{0}'.format(params['arg_input']).strip()
+    output_file = r'{0}'.format(params['arg_output']).strip()
+    enhance(input_file, output_file, model)
 
 if __name__ == "__main__":
     main(parameters(sys.argv))

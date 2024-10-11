@@ -22,6 +22,7 @@ import java.util.Iterator;
  */
 public class ImageEnhancerWorker {
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    private static final boolean IS_FILTER_ENABLED = false;
     private final ImageEnhancer imageEnhancer;
 
     /**
@@ -70,7 +71,9 @@ public class ImageEnhancerWorker {
 
             final String format = getImageFormat(input);
 
-//            ImageIO.write(sharpen(image), format, baos);
+            if (IS_FILTER_ENABLED) {
+                ImageIO.write(sharpen(image), format, baos);
+            }
             ImageIO.write(image, format, baos);
         } catch (IOException e) {
             LOGGER.error("enhancing the image", e);

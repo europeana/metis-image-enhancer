@@ -90,8 +90,7 @@ add dependency in your project
 <dependency>
     <groupId>eu.europeana.metis.image.enhancement</groupId>
     <artifactId>metis-image-enhancer-client</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <scope>compile</scope>
+    <version>1</version>
 </dependency>
 ````
 ### properties
@@ -102,6 +101,20 @@ api.url = http://localhost:5050
 connect.timeout = 300
 read.timeout = 300
 ```
+#### command line stand alone script
+If you only want to use the image processing without the API, you can invoke this 
+from the command line, using the script directly.
+
+```
+python ./metis-image-enhancer-python-rest/src/main/mie.py -i image_input.jpg -o image_output.jpg
+```
+
+
+## General limitations 
+Why this AI python model runs as a script? in this iteration the python model cannot be held 
+in memory otherwise you will get an Out of Memory. The model in python of image processing 
+doesn't free the resources every time. 
+Steps of usage: load,  process, get results, discard, repeat again.
 
 #### See demo project
 run docker image previous to execute the demo app and then execute the following command in the cloned folder of 

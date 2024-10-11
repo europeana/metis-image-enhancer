@@ -12,10 +12,9 @@
 		<module>metis-image-enhancer-demo</module>
 		<module>metis-image-enhancer-client</module>
         <module>metis-image-enhancer-python-rest</module>
-        <module>metis-image-enhancer-python-script</module>
     </modules>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>21</java.version>
 		<version.spring>2.7.11</version.spring>
 		<version.junit>5.9.3</version.junit>
 		<version.mockito>5.4.0</version.mockito>
