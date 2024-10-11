@@ -94,12 +94,14 @@ add dependency in your project
 </dependency>
 ````
 ### properties
-By default, the following properties are set in the library if you want to change the address or port, and the timeout 
-are in seconds.
+By default, the following properties are set in the library if you want to change the address or port, 
+and the timeout are in seconds. the property `worker.service.type` can have the values `api` or `script`
+this indicates which approach will use to process the images.
 ```
 api.url = http://localhost:8080
 connect.timeout = 300
 read.timeout = 300
+worker.service.type = api
 ```
 #### command line stand alone script
 If you only want to use the image processing without the API, you can invoke this 
