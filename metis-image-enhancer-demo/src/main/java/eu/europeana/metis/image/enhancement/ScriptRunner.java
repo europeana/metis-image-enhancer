@@ -21,7 +21,7 @@ public class ScriptRunner implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws InterruptedException {
+    public void run(String[] args) throws InterruptedException {
         ImageProcessor processor = new ImageProcessor(new ImageEnhancerWorker(enhancerScript));
         processor.processDemo();
     }

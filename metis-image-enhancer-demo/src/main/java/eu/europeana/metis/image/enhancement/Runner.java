@@ -3,31 +3,27 @@ package eu.europeana.metis.image.enhancement;
 import eu.europeana.metis.image.enhancement.client.ImageEnhancerClient;
 import eu.europeana.metis.image.enhancement.config.ImageEnhancerClientConfig;
 import eu.europeana.metis.image.enhancement.domain.worker.ImageEnhancerWorker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
-
-import java.lang.invoke.MethodHandles;
 
 /**
  * The type Runner.
  */
 public class Runner implements CommandLineRunner {
 
-    private final ImageEnhancerClientConfig imageEnhancerClientConfig;
+  private final ImageEnhancerClientConfig imageEnhancerClientConfig;
 
-    /**
-     * Instantiates a new Runner.
-     *
-     * @param imageEnhancerClientConfig the image enhancer client config
-     */
-    public Runner(ImageEnhancerClientConfig imageEnhancerClientConfig) {
-        this.imageEnhancerClientConfig = imageEnhancerClientConfig;
-    }
+  /**
+   * Instantiates a new Runner.
+   *
+   * @param imageEnhancerClientConfig the image enhancer client config
+   */
+  public Runner(ImageEnhancerClientConfig imageEnhancerClientConfig) {
+    this.imageEnhancerClientConfig = imageEnhancerClientConfig;
+  }
 
-    @Override
-    public void run(String... args) throws InterruptedException {
-        ImageProcessor processor = new ImageProcessor(new ImageEnhancerWorker(new ImageEnhancerClient(imageEnhancerClientConfig)));
-        processor.processDemo();
-    }
+  @Override
+  public void run(String[] args) throws InterruptedException {
+    ImageProcessor processor = new ImageProcessor(new ImageEnhancerWorker(new ImageEnhancerClient(imageEnhancerClientConfig)));
+    processor.processDemo();
+  }
 }

@@ -70,7 +70,7 @@ public class ImageEnhancerClient implements ImageEnhancer {
             ByteArrayInputStream responseByteArrayStream = new ByteArrayInputStream(Objects.requireNonNull(response.getBody()));
             imageEnhanced = responseByteArrayStream.readAllBytes();
         } else {
-            LOGGER.error("Failed to process image. Response code: {}", response.getStatusCodeValue());
+            LOGGER.error("Failed to process image. Response code: {}", response.getStatusCode().value());
         }
 
         return imageEnhanced;

@@ -1,6 +1,7 @@
 package eu.europeana.metis.image.enhancement.client;
 
 import eu.europeana.metis.image.enhancement.domain.model.ImageEnhancer;
+import java.nio.charset.StandardCharsets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,7 +60,9 @@ public class ImageEnhancerScript implements ImageEnhancer {
 
         try {
             File tempImageFile = getTempImageFile(imageToEnhance, uuid);
-            if (tempImageFile == null) return null;
+            if (tempImageFile == null) {
+                return new byte[0];
+            }
             final String inputFile = tempImageFile.getAbsolutePath();
             final String outputFile = tempImageFile.getAbsolutePath().replace(".img", "_out.img");
 
@@ -100,7 +103,7 @@ public class ImageEnhancerScript implements ImageEnhancer {
      */
     public List<String> readProcessOutput(InputStream inputStream) throws IOException {
         List<String> stringList = new ArrayList<>();
-        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 stringList.add(line);

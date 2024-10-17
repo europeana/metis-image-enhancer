@@ -90,9 +90,9 @@ public class ImageEnhancerWorker {
      */
     private BufferedImage sharpen(BufferedImage imageToSharpen) {
         Kernel kernel = new Kernel(3, 3,
-                new float[]{-0.0023f, -0.0432f, -0.0023f,
-                        -0.0432f, 1.182f, -0.0432f,
-                        -0.0023f, -0.0432f, -0.0023f});
+                new float[]{-0.0023F, -0.0432F, -0.0023F,
+                        -0.0432F, 1.182F, -0.0432F,
+                        -0.0023F, -0.0432F, -0.0023F});
         BufferedImageOp op = new ConvolveOp(kernel);
         imageToSharpen = op.filter(imageToSharpen, null);
         return imageToSharpen;
