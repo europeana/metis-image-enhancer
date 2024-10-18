@@ -105,12 +105,12 @@ worker.service.type = api
 ```
 #### command line stand alone script
 If you only want to use the image processing without the API, you can invoke this 
-from the command line, using the script directly.
+from the command line, using the script directly. Your python environment need to comply with
+the following dependencies (filetype, flask, waitress, uuid, pillow, tensorflow, and numpy)
 
 ```
 python ./metis-image-enhancer-python-rest/src/main/mie.py --input image_input.jpg --output image_output.jpg
 ```
-
 
 ## General limitations 
 Why this AI python model runs as a script? in this iteration the python model cannot be held 
