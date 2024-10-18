@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>eu.europeana.metis</groupId>
 	<artifactId>metis-image-enhancer</artifactId>
-	<version>1-SNAPSHOT</version>
+	<version>2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>metis-image-enhancer</name>
 	<description>image enhancement library</description>
