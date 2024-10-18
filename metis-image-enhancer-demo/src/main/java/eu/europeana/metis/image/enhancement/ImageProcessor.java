@@ -20,11 +20,12 @@ import org.slf4j.LoggerFactory;
  */
 public class ImageProcessor {
 
-  public static final int TIMEOUT = 800;
-  public static final int DEMO_ITEMS = 20;
-  public static final int WORKER_THREADS = 4;
+  private static final int TIMEOUT = 800;
+  private static final int DEMO_ITEMS = 20;
+  private static final int WORKER_THREADS = 4;
   private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
   private final ImageEnhancerWorker imageEnhancerWorker;
+  private final ExecutorService pool;
 
   /**
    * Instantiates a new Image processor.
@@ -33,19 +34,17 @@ public class ImageProcessor {
    */
   public ImageProcessor(ImageEnhancerWorker imageEnhancerWorker) {
     this.imageEnhancerWorker = imageEnhancerWorker;
+    this.pool = Executors.newFixedThreadPool(WORKER_THREADS);
   }
 
   /**
    * Process demo.
-   *
-   * @throws InterruptedException the interrupted exception
    */
   public void processDemo() {
     try {
-      ExecutorService service = Executors.newFixedThreadPool(WORKER_THREADS);
       for (int i = 0; i < DEMO_ITEMS; i++) {
         final int imageIndex = i;
-        service.submit(() -> {
+        pool.submit(() -> {
               try {
                 processImage(imageIndex);
               } catch (IOException e) {
@@ -54,10 +53,31 @@ public class ImageProcessor {
             }
         );
       }
-      service.shutdown();
-      service.awaitTermination(TIMEOUT, TimeUnit.SECONDS);
-    } catch (InterruptedException e) {
-      LOGGER.error("processing image", e);
+    } finally {
+      shutdownAndAwaitTermination(pool);
+    }
+  }
+
+  /**
+   * Shutdown and await termination.
+   *
+   * @param pool the pool
+   */
+  private void shutdownAndAwaitTermination(ExecutorService pool) {
+    pool.shutdown(); // Disable new tasks from being submitted
+    try {
+      // Wait a while for existing tasks to terminate
+      if (!pool.awaitTermination(TIMEOUT, TimeUnit.SECONDS)) {
+        pool.shutdownNow(); // Cancel currently executing tasks
+        // Wait a while for tasks to respond to being cancelled
+        if (!pool.awaitTermination(TIMEOUT, TimeUnit.SECONDS)) {
+          LOGGER.error("Pool did not terminate");
+        }
+      }
+    } catch (InterruptedException ex) {
+      // (Re-)Cancel if current thread also interrupted
+      pool.shutdownNow();
+      // Preserve interrupt status
       Thread.currentThread().interrupt();
     }
   }

@@ -22,7 +22,7 @@ public class Runner implements CommandLineRunner {
   }
 
   @Override
-  public void run(String[] args) throws InterruptedException {
+  public void run(String[] args) {
     ImageProcessor processor = new ImageProcessor(new ImageEnhancerWorker(new ImageEnhancerClient(imageEnhancerClientConfig)));
     processor.processDemo();
   }
