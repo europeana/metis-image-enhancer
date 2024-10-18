@@ -103,7 +103,8 @@ public class ImageEnhancerScript implements ImageEnhancer {
      */
     public List<String> readProcessOutput(InputStream inputStream) throws IOException {
         List<String> stringList = new ArrayList<>();
-        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+        try (BufferedReader bufferedReader = new BufferedReader(
+            new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 stringList.add(line);

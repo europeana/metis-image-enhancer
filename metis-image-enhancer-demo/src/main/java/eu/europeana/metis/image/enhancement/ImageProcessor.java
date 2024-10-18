@@ -40,9 +40,9 @@ public class ImageProcessor {
    *
    * @throws InterruptedException the interrupted exception
    */
-  public void processDemo() throws InterruptedException {
-    ExecutorService service = Executors.newFixedThreadPool(WORKER_THREADS);
+  public void processDemo() {
     try {
+      ExecutorService service = Executors.newFixedThreadPool(WORKER_THREADS);
       for (int i = 0; i < DEMO_ITEMS; i++) {
         final int imageIndex = i;
         service.submit(() -> {
@@ -54,9 +54,11 @@ public class ImageProcessor {
             }
         );
       }
-    } finally {
       service.shutdown();
       service.awaitTermination(TIMEOUT, TimeUnit.SECONDS);
+    } catch (InterruptedException e) {
+      LOGGER.error("processing image", e);
+      Thread.currentThread().interrupt();
     }
   }
 
