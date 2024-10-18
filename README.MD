@@ -108,7 +108,7 @@ If you only want to use the image processing without the API, you can invoke thi
 from the command line, using the script directly.
 
 ```
-python ./metis-image-enhancer-python-rest/src/main/mie.py -i image_input.jpg -o image_output.jpg
+python ./metis-image-enhancer-python-rest/src/main/mie.py --input image_input.jpg --output image_output.jpg
 ```
 
 
