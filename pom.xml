@@ -77,7 +77,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${version.maven.compiler.plugin}</version>
 				<configuration>
-					<release>11</release>
+					<release>21</release>
 				</configuration>
 			</plugin>
 			<plugin>
