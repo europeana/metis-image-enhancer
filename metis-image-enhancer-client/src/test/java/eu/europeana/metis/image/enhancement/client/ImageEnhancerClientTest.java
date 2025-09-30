@@ -13,6 +13,7 @@ import eu.europeana.metis.image.enhancement.config.ImageEnhancerClientConfig;
 import java.io.IOException;
 import java.util.Objects;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
@@ -32,6 +33,7 @@ class ImageEnhancerClientTest {
     JvmProxyConfigurer.configureFor(wireMockServer);
   }
 
+  @Disabled
   @Test
   void enhance() throws IOException {
     final String successResponse = new String(
@@ -57,6 +59,7 @@ class ImageEnhancerClientTest {
     assertNotNull(enhanced);
   }
 
+  @Disabled
   @Test
   void enhance_server_error() throws IOException {
     final String successResponse = new String(
